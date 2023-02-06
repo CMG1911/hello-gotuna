@@ -1,11 +1,10 @@
-FROM golang:1.20-alpine AS construccion
-WORKDIR /opt/gotuna/
+FROM golang:bullseye AS builder
+WORKDIR /opt/gotuna
 COPY . .
-EXPOSE 8888
-RUN go build -o build/main ./examples/fullapp/cmd/main.go
+RUN go build examples/fullapp/cmd/main.go
 
-FROM golang:1.20-alpine AS ejecucion
-WORKDIR /opt/gotuna/
-EXPOSE 8888
-COPY --from=construccion /opt/gotuna/build ./build
-CMD ["./build/main"] 
+FROM debian:11.6-slim AS runtime
+WORKDIR /opt/gotuna
+COPY --from=builder /opt/gotuna/main .
+CMD ["./main"]
+

@@ -3,6 +3,6 @@ services:
 
   odyssey:
     build: .
-    image: gotuna:latest
+    image: gotuna
     ports:
      - 8888:8888
